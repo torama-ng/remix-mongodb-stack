@@ -8,7 +8,7 @@ import MovieComponent from "~/components/movie";
 export async function loader({ request }: LoaderArgs) {
   const url = new URL(request.url);
 
-  let db = await mongodb.db("sample_mflix");
+  let db = await mongodb.db("treasury");
   let collection = await db.collection("movies");
   let movies = await collection.find({}).limit(10).toArray();
 

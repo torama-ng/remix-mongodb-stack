@@ -3,6 +3,9 @@ import React from "react";
 import stylesheet from "~/tailwind.css";
 
 import logo from "~/assets/logo.png";
+import { ThemeProvider } from "~/contexts/ThemeContext";
+import ThemeSwitcher from "~/components/ThemeSwitcher";
+
 
 export function links() {
   return [{ rel: "stylesheet", href: stylesheet }];
@@ -20,11 +23,14 @@ export function meta() {
 
 export default function App() {
   return (
-    <Document>
-      <Layout>
-        <Outlet />
-      </Layout>
-    </Document>
+    <ThemeProvider>
+      <Document>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </Document>
+    </ThemeProvider>
+
   );
 }
 
@@ -53,7 +59,7 @@ function Document({ children, title }: iDocType) {
         <Links />
         <title>{title ? title : "MongoDB Remix Template"}</title>
       </head>
-      <body>
+      <body className="bg-black">
         {children}
         {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
@@ -64,31 +70,35 @@ function Document({ children, title }: iDocType) {
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <div className="flex flex-col h-screen mx-2">
-          <nav className="flex h-16 items-center width-full">
-            <Link to="/">
-              <img src={logo} width="200" alt="Logo" />
-            </Link>
-          </nav>
-          <div className="flex h-8 items-center bg-gray-100">
-            A Remix Stack for MongoDB
-          </div>
-          <div className="flex flex-1 overflow-hidden">
-            <aside className="hidden sm:block my-1 w-64 overflow-y-auto">
-              <ul className="list-none">
-                <li><Link to="/movies">Movies</Link></li>
-                <li><Link to="/movies/add"> * Add</Link></li>
-                <li><Link to="/about">About</Link></li>
-                <li><Link to="https://www.mongodb.com/docs/drivers/node/current/">MongoDB Driver docs</Link></li>
-              </ul>
-            </aside>
-            <main className="flex flex-1 my-1 overflow-y-auto paragraph px-4">
-              {children}
-            </main>
-          </div>
-          <div className="flex bg-gray-100">Fork this on &nbsp;<Link to="https://github.com/mongodb-developer/remix">Github</Link></div>
-        </div>
-    </>
+    <div className="flex flex-col h-screen mx-2">
+      <nav className="flex h-16 items-center width-full">
+        <Link to="/">
+          <img src={logo} width="200" alt="Logo" />
+        </Link>
+      </nav>
+      <ThemeSwitcher />
+      <div className="flex h-8 items-center bg-gray-100">
+        A Remix Stack for MongoDB
+      </div>
+      <div className="flex flex-1 overflow-hidden">
+        <aside className="hidden sm:block my-1 w-64 overflow-y-auto">
+          <ul className="list-none">
+            <li><Link to="/movies">Movies</Link></li>
+            <li><Link to="/movies/add"> * Add</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="https://www.mongodb.com/docs/drivers/node/current/">MongoDB Driver docs</Link></li>
+          </ul>
+
+          <ul className="list-none">
+            <li><Link to="/expenses">Expenses</Link></li>
+            <li><Link to="/expenses/add"> * Add</Link></li>
+          </ul>
+        </aside>
+        <main className="flex flex-1 my-1 overflow-y-auto paragraph px-4">
+          {children}
+        </main>
+      </div>
+      <div className="flex bg-gray-100">Fork this on &nbsp;<Link to="https://github.com/mongodb-developer/remix">Github</Link></div>
+    </div>
   );
 }

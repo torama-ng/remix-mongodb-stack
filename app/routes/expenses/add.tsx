@@ -5,21 +5,21 @@ import { mongodb } from "~/utils/db.server";
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
-  const movie = {
+  const expense = {
     title: formData.get("title"),
     year: formData.get("year")
   }
   const db = await mongodb.db("treasury");
-  const collection = await db.collection("movies");
-  const result = await collection.insertOne(movie);
-  return redirect(`/movies/${result.insertedId}`);
+  const collection = await db.collection("expenses");
+  const result = await collection.insertOne(expense);
+  return redirect(`/expenses/${result.insertedId}`);
 }
 
 export default function Index() {
   return (
     <div>
-      <h2>Add a movie</h2>
-      <Form method="POST" action="/movies/add">
+      <h2>Add a expense</h2>
+      <Form method="POST" action="/expenses/add">
         <input type="text" name="title" placeholder="Title" />
         <input type="text" name="year" placeholder="Year" />
         <button type="submit">

@@ -4,21 +4,21 @@ import type { LoaderArgs } from "@remix-run/node";
 import { mongodb, ObjectId } from "~/utils/db.server";
 
 export async function loader({ params }: LoaderArgs) {
-  const movieId = params.movieId;
+  const expenseId = params.expenseId;
 
   let db = await mongodb.db("treasury");
-  let collection = await db.collection("movies");
-  let movie = await collection.findOne({_id: new ObjectId(movieId)});
+  let collection = await db.collection("expenses");
+  let expense = await collection.findOne({_id: new ObjectId(expenseId)});
 
-  return json(movie);
+  return json(expense);
 }
 
 export default function Index() {
-  const movie = useLoaderData();
+  const expense = useLoaderData();
   return (
     <div>
-      <h1>Movie: {movie.title}</h1>
-      <p>{movie.plot}</p>
+      <h1>Movie: {expense.title}</h1>
+      <p>{expense.type}</p>
     </div>
   )
 }
